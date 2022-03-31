@@ -39,7 +39,7 @@ class sa_smart_array_along_curve(bpy.types.Operator):
         else:
             curveName = bpy.context.active_object.name
 
-        #not a curve Error handler
+        # not a curve Error handler
         try:
             curveLoc = bpy.context.active_object.location
         except:
@@ -50,7 +50,7 @@ class sa_smart_array_along_curve(bpy.types.Operator):
         # deselecting curve
         bpy.context.active_object.select_set(0)
 
-        #selecting and copying object tamplate
+        # selecting and copying object tamplate
         bpy.data.objects[tmplObjName].select_set(True)
         bpy.context.view_layer.objects.active = bpy.data.objects[tmplObjName]
 
@@ -64,10 +64,10 @@ class sa_smart_array_along_curve(bpy.types.Operator):
         # bpy.context.active_object.name = objName
 
 
-        #moving sidewalk to the beggining of the curve
+        # moving sidewalk to the beggining of the curve
         bpy.context.active_object.location = curveLoc
 
-        #adding and setting up Array modifier
+        # adding and setting up Array modifier
         bpy.ops.object.modifier_add(type='ARRAY')
         bpy.context.active_object.modifiers["Array"].name=objName+'_Array'
         bpy.context.active_object.modifiers[objName+'_Array'].fit_type='FIT_CURVE'
@@ -75,7 +75,7 @@ class sa_smart_array_along_curve(bpy.types.Operator):
         bpy.context.active_object.modifiers[objName+'_Array'].use_merge_vertices = True
         bpy.context.active_object.modifiers[objName+'_Array'].merge_threshold = 0.05
 
-        ##
+        # 
         try:
             bpy.context.object.modifiers[objName+'_Array'].start_cap = cScene.arrProps.cArrayStartCapObject
         except:
@@ -86,15 +86,15 @@ class sa_smart_array_along_curve(bpy.types.Operator):
             bpy.context.object.modifiers[objName+'_Array'].end_cap = cScene.arrProps.cArrayEndCapObject
         except:
             pass
-        #bpy.context.object.modifiers["SidewalkArray"].end_cap = cArrayEndCapObject
+        # bpy.context.object.modifiers["SidewalkArray"].end_cap = cArrayEndCapObject
 
 
-        #adding and setting up Curve modifier
+        # adding and setting up Curve modifier
         bpy.ops.object.modifier_add(type='CURVE')
         bpy.context.active_object.modifiers["Curve"].name=objName+'_Curve'
         bpy.context.active_object.modifiers[objName+'_Curve'].object=bpy.data.objects[curveName]
 
-        #adding and setting up Decimate modifier
+        # adding and setting up Decimate modifier
         # bpy.ops.object.modifier_add(type='DECIMATE')
         # bpy.context.active_object.modifiers["Decimate"].name=objName+'_Decimate'
         # bpy.context.object.modifiers[objName+'_Decimate'].decimate_type = 'DISSOLVE'
@@ -103,26 +103,26 @@ class sa_smart_array_along_curve(bpy.types.Operator):
 
 
 
-        #print(trDecimateAngleLimit)
+        # print(trDecimateAngleLimit)
         bpy.context.active_object.name = objName
 
         # print(bpy.context.active_object.name)
         # print(objName)
 
-        #bpy.ops.object.duplicate_move(bpy.data.objects[tmplObjName], curveLoc)
+        # bpy.ops.object.duplicate_move(bpy.data.objects[tmplObjName], curveLoc)
 
 
-        #Moving to target Collections:
-        #Objects Collection
+        # Moving to target Collections:
+        # Objects Collection
         to_unlink =[]
         for y in range(len(bpy.data.objects[objName].users_collection)):
             to_unlink.append(bpy.data.objects[objName].users_collection[y].name)
 
-        # #changing objName, if overriden by user
+        #  changing objName, if overriden by user
         # if cScene.arrProps.cArrObjName is not None:
         #     objName = cScene.arrProps.cArrObjName
 
-        #if Object Target collection isnt null, manage collections
+        # if Object Target collection isnt null, manage collections
         if cScene.arrProps.cArrObjectsColl is not None:
             if cScene.arrProps.cArrObjectsColl.name in to_unlink:
                 to_unlink.remove(cScene.arrProps.cArrObjectsColl.name)
@@ -142,7 +142,7 @@ class sa_smart_array_along_curve(bpy.types.Operator):
             for z in range(len(to_unlink)):
                 bpy.data.collections[to_unlink[z]].objects.unlink(bpy.data.objects[objName])
 
-        #Curve Collection management:
+        # Curve Collection management:
         to_unlink =[]
         for y in range(len(bpy.data.objects[curveName].users_collection)):
             to_unlink.append(bpy.data.objects[curveName].users_collection[y].name)
@@ -164,7 +164,7 @@ class sa_smart_array_along_curve(bpy.types.Operator):
             for z in range(len(to_unlink)):
                 bpy.data.collections[to_unlink[z]].objects.unlink(bpy.data.objects[curveName])
 
-        #Decimation
+        # Decimation
         if cScene.arrProps.cArrDec == 1:
             bpy.ops.object.modifier_add(type='DECIMATE')
             bpy.context.active_object.modifiers["Decimate"].name='tr_Decimate'
@@ -181,8 +181,8 @@ class sa_smart_array_along_curve(bpy.types.Operator):
 
 # Edge to Curve 
 class sa_edge_to_curve(bpy.types.Operator):
-    bl_label ='Points to Bezier Curve'
-    bl_idname = 'object.points_to_curve'
+    bl_label ='Edge to Bezier Curve'
+    bl_idname = 'object.edge_to_curve'
     bl_description = 'Creates a curve from selected object or verticles'
     bl_space_type="VIEW_3D"
     bl_region_type="UI"
@@ -198,12 +198,12 @@ class sa_edge_to_curve(bpy.types.Operator):
     def execute(self, contex):
         cScene = bpy.context.scene
         # n = Smooth iterations
-        n = cScene.P2CProps.P2CSmoothIt
+        n = cScene.e2c_props.P2CSmoothIt
         # d = Decimation ratio (0.00 - 1.00)
-        d = cScene.P2CProps.P2CDecRatio
+        d = cScene.e2c_props.P2CDecRatio
 
 
-        #If Edit mode is active
+        # If Edit mode is active
         cm = bpy.context.object.mode
         if cm == 'EDIT':
             print('Script launched in edit mode: duplicating selected object and getting rid of unwanted verticles')
@@ -217,17 +217,17 @@ class sa_edge_to_curve(bpy.types.Operator):
         else:
             bpy.ops.object.duplicate()
 
-        #Applying Transforms!!
+        # Applying Transforms!!
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
         # Converting to Bezier curve, handles set to automatic
         bpy.ops.object.convert(target='CURVE')
         bpy.ops.object.mode_set(mode='EDIT')
-        if cScene.P2CProps.P2CType=='Bezier':
+        if cScene.e2c_props.e2c_type=='Bezier':
             bpy.ops.curve.spline_type_set(type='BEZIER')
             bpy.ops.curve.select_all(action='SELECT')
         bpy.ops.curve.handle_type_set(type='AUTOMATIC')
-        if cScene.P2CProps.P2CType=='Bezier Points':
+        if cScene.e2c_props.e2c_type=='Bezier Points':
             bpy.ops.curve.spline_type_set(type='BEZIER')
             bpy.ops.curve.select_all(action='SELECT')
             bpy.ops.curve.handle_type_set(type='VECTOR')
@@ -245,7 +245,7 @@ class sa_edge_to_curve(bpy.types.Operator):
         bpy.ops.curve.decimate(ratio=d)
 
         # Setting U Resolution higher
-        bpy.context.object.data.resolution_u = cScene.P2CProps.P2CResolution
+        bpy.context.object.data.resolution_u = cScene.e2c_props.P2CResolution
 
 
 
@@ -254,43 +254,43 @@ class sa_edge_to_curve(bpy.types.Operator):
         bpy.ops.curve.select_all(action='DESELECT')
         bpy.ops.curve.de_select_first()
 
-        if cScene.P2CProps.P2CType=='Bezier' or cScene.P2CProps.P2CType=='Bezier Points':
+        if cScene.e2c_props.e2c_type=='Bezier' or cScene.e2c_props.e2c_type=='Bezier Points':
             startingPoint = obj.data.splines[0].bezier_points[0]
         else:
             startingPoint = obj.data.splines[0].points[0]
 
 
-        #Trimming to vector [3]
+        # Trimming to vector [3]
         bpy.context.scene.cursor.location = startingPoint.co[:3]
         print (bpy.context.scene.cursor.location)
 
-        #bpy.context.object.mode_set(mode='OBJECT')
+        # bpy.context.object.mode_set(mode='OBJECT')
         bpy.ops.object.editmode_toggle()
         bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
         bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
 
-        #Moving to collections
+        # Moving to collections
         # to_unlink =[]
         # for y in range(len(bpy.context.object.users_collection)):
         #     to_unlink.append(bpy.context.object.users_collection[y].name)
-        #
-        #
-        # if cScene.P2CProps.P2CCurvesColl is not None:
-        #     if cScene.P2CProps.P2CCurvesColl.name in to_unlink:
-        #         to_unlink.remove(cScene.P2CProps.P2CCurvesColl.name)
+        # 
+        # 
+        # if cScene.e2c_props.P2CCurvesColl is not None:
+        #     if cScene.e2c_props.P2CCurvesColl.name in to_unlink:
+        #         to_unlink.remove(cScene.e2c_props.P2CCurvesColl.name)
         #     try:
         #         to_unlink.remove("Master Collection")
         #         cScene.collection.objects.unlink(bpy.context.object)
         #     except ValueError:
         #         pass
-        #
-        #
-        #     if cScene.P2CProps.P2CCurvesColl not in bpy.context.object.users_collection:
-        #         bpy.data.collections[cScene.P2CProps.P2CCurvesColl.name].objects.link(bpy.context.object)
-        #
+        # 
+        # 
+        #     if cScene.e2c_props.P2CCurvesColl not in bpy.context.object.users_collection:
+        #         bpy.data.collections[cScene.e2c_props.P2CCurvesColl.name].objects.link(bpy.context.object)
+        # 
         #     for z in range(len(to_unlink)):
         #         bpy.data.collections[to_unlink[z]].objects.unlink(bpy.context.object)
-        #
+        # 
 
         return {'FINISHED'}
 

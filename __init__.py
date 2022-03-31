@@ -4,9 +4,9 @@ bl_info = {
     "version": (0, 17, 0),
     "blender": (3, 1, 0),
     "location": "View3D > Panel",
-    "description": "Set of context-sensitive tools aimed to improve workflow with curves",
+    "description": "Tools aimed to improve workflow with curves",
     "warning": "",
-    "wiki_url": "",
+    "GitHub": "github.com/ateret/smart_array_along_curve",
     "category": "Generic",
 }
 
@@ -18,7 +18,7 @@ from  . sa_tools import *
 
 
 
-classes = (sa_smart_array_along_curve, sa_edge_to_curve,sa_PT_panel)
+classes = (sa_smart_array_along_curve, sa_edge_to_curve, sa_PT_panel, sa_props,e2c_props,sa_tools_PT_main,sa_tools_PT_edge_to_curve,sa_tools_PT_Array)
 
 
 def register():

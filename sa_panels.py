@@ -77,9 +77,9 @@ class sa_tools_PT_edge_to_curve(bpy.types.Panel):
         row2 = column1.row(align=True)
         row2.scale_y = 2.0
         if scene.e2c_props.P2CType=='Bezier':
-            row2.operator('object.edge2curve' ,text="Edge to Bezier Curve",icon="IPO_BEZIER")
+            row2.operator('object.edge_to_curve' ,text="Edge to Bezier Curve",icon="IPO_BEZIER")
         else:
-            row2.operator('object.edge2curve' ,text="Edge to Simple Curve",icon="IPO_LINEAR")
+            row2.operator('object.edge_to_curve' ,text="Edge to Simple Curve",icon="IPO_LINEAR")
 
 
 class sa_tools_PT_Array(bpy.types.Panel):

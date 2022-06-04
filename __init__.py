@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Smart Array Along Curve",
     "author": "Tomasz Radwan, atereten@gmail.com",
-    "version": (0, 17, 0),
+    "version": (0, 17, 2),
     "blender": (3, 1, 0),
     "location": "View3D > Panel",
     "description": "Tools aimed to improve workflow with curves",

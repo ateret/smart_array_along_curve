@@ -198,7 +198,7 @@ class sa_edge_to_curve(bpy.types.Operator):
     def execute(self, contex):
         cScene = bpy.context.scene
         # n = Smooth iterations
-        n = cScene.e2c_props.P2CSmoothIt
+        n = cScene.e2c_props.e2c_smooth_iteration
         # d = Decimation ratio (0.00 - 1.00)
         d = cScene.e2c_props.P2CDecRatio
 
@@ -245,7 +245,7 @@ class sa_edge_to_curve(bpy.types.Operator):
         bpy.ops.curve.decimate(ratio=d)
 
         # Setting U Resolution higher
-        bpy.context.object.data.resolution_u = cScene.e2c_props.P2CResolution
+        bpy.context.object.data.resolution_u = cScene.e2c_props.e2c_resolution
 
 
 

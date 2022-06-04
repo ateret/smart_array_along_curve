@@ -94,9 +94,9 @@ class sa_props(bpy.types.PropertyGroup):
 class e2c_props(bpy.types.PropertyGroup):
     bl_label ='Edge to Curve property group'
     bl_idname = 'scene.e2c_props'
-    bl_description = 'Bunch of properties used by Points2Curve'
+    bl_description = 'Bunch of properties used by Edge to Curve'
 
-    P2CType: bpy.props.EnumProperty(
+    e2c_type: bpy.props.EnumProperty(
         name = "Points Type" ,
         items=[
             ('Bezier', 'Bezier', 'Bezier','IPO_BEZIER',0),
@@ -110,63 +110,28 @@ class e2c_props(bpy.types.PropertyGroup):
 
     #IPO_BEZIER
     #IPO_LINEAR
-    P2CResolution: bpy.props.IntProperty(
-        name = "CurveResolution" ,
-        #subtype ="ANGLE",
+    e2c_resolution: bpy.props.IntProperty(
+        name = "Curve Resolution" ,
         default = 64,
         description = "TargetCurveResolution",
     )
 
-    P2CSmoothIt: bpy.props.IntProperty(
-        name = "SmoothIterations" ,
-        #subtype ="ANGLE",
+    e2c_smooth_iteration: bpy.props.IntProperty(
+        name = "Curve Smooth Iterations" ,
         default = 1,
         description = "Smooth iterations",
     )
 
-    P2CDecRatio: bpy.props.FloatProperty(
+    e2c_decimation_ratio: bpy.props.FloatProperty(
         name = "DecimationRatio" ,
-        #subtype ="ANGLE",
         default = 0.85,
         max = 1,
         min = 0,
         description = "Decimation Ratio",
     )
 
-    P2CCurvesColl: bpy.props.PointerProperty(
+    e2c_curves_coll: bpy.props.PointerProperty(
         type = bpy.types.Collection,
         name = "Collection to put created curves in ",
         description = "Collection to put created curves in ",
     )
-
-
-    bl_label ='Select By Volume properties'
-    bl_idname = 'scene.SbVProps'
-    bl_description = 'Bunch of properties used by Select By Volume'
-
-    vThreshold: bpy.props.FloatProperty(
-        name = "Volume Threshold" ,
-        subtype ="PERCENTAGE",
-        default = (0.0),
-        description = "Volume Threshold",
-    )
-
-    sColl: bpy.props.PointerProperty(
-        type = bpy.types.Collection,
-        name = "Collection to check objects volume within ",
-        description = "Collection to check objects volume within ",
-    )
-
-    sType: bpy.props.EnumProperty(
-        name = "Comparision Type" ,
-        items=[
-            ('less','less','less',0),
-            ('less or equal','less or equal','less or equal', 1),
-            ('equal', 'equal', 'equal',2),
-            ('more or equal', 'more or equal', 'more or equal',3),
-            ('more', 'more', 'more',4),
-        ],
-        description = "Do You want to select objects with similiar, bigger or smaller volume",
-        default ='less or equal',
-    )
-
